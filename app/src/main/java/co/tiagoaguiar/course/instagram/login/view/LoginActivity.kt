@@ -2,6 +2,8 @@ package co.tiagoaguiar.course.instagram.login.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
@@ -20,14 +22,20 @@ class LoginActivity : AppCompatActivity() {
     editTextEmail.addTextChangedListener(watcher)
     editTextPassword.addTextChangedListener(watcher)
 
-    findViewById<LoadingButton>(R.id.login_btn_enter).setOnClickListener {
+    val buttonEnter =  findViewById<LoadingButton>(R.id.login_btn_enter)
+    buttonEnter.setOnClickListener {
+      buttonEnter.showProgress(true)
+
       findViewById<TextInputLayout>(R.id.login_edit_email_input)
         .error = "Esse e-mail é inválido"
 
       findViewById<TextInputLayout>(R.id.login_edit_password_input)
         .error = "Senha Incorreta"
-    }
 
+      Handler(Looper.getMainLooper()).postDelayed({
+        buttonEnter.showProgress(false)
+      }, 2000)
+    }
   }
 
   private val watcher = object : TextWatcher {
